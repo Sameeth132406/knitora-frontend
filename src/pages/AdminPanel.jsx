@@ -24,11 +24,14 @@ function AdminPanel() {
   }, []);
 
   const handleImage = (e) => {
-    const file = e.target.files[0];
-    const reader = new FileReader();
-    reader.onload = () => setImage(reader.result);
-    reader.readAsDataURL(file);
-  };
+  const file = e.target.files?.[0];
+  if (!file) return; // ✅ prevents crash
+
+  const reader = new FileReader();
+  reader.onload = () => setImage(reader.result);
+  reader.readAsDataURL(file);
+};
+
 
   const submitProduct = () => {
     if (!name || !price) {
