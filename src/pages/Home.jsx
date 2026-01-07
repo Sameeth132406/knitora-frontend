@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import logo from "../assets/knitora-logo.jpg";
 
+
 function Home() {
   const navigate = useNavigate();
 
