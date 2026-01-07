@@ -3,7 +3,7 @@ import {
   getProducts,
   addProduct,
   deleteProduct,
-  updateProduct
+  updateProduct,
 } from "../utils/storage";
 import { useNavigate } from "react-router-dom";
 
@@ -14,26 +14,34 @@ function AdminPanel() {
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
   const [image, setImage] = useState("");
-  const [editIndex, setEditIndex] = useState(null);
+  const [editId, setEditId] = useState(null);
 
+  // 🔹 Load products from Firebase
   useEffect(() => {
     if (localStorage.getItem("admin") !== "true") {
       navigate("/admin");
+      return;
     }
-    setProducts(getProducts());
+    loadProducts();
   }, []);
 
+  const loadProducts = async () => {
+    const data = await getProducts();
+    setProducts(data);
+  };
+
+  // 🔹 Handle image safely
   const handleImage = (e) => {
-  const file = e.target.files?.[0];
-  if (!file) return; // ✅ prevents crash
+    const file = e.target.files?.[0];
+    if (!file) return;
 
-  const reader = new FileReader();
-  reader.onload = () => setImage(reader.result);
-  reader.readAsDataURL(file);
-};
+    const reader = new FileReader();
+    reader.onload = () => setImage(reader.result);
+    reader.readAsDataURL(file);
+  };
 
-
-  const submitProduct = () => {
+  // 🔹 Add / Update product
+  const submitProduct = async () => {
     if (!name || !price) {
       alert("Name and price required");
       return;
@@ -42,33 +50,33 @@ function AdminPanel() {
     const productData = {
       name,
       price,
-      image: image || products[editIndex]?.image,
-      contact: "919345864907"
+      image,
+      contact: "919345864907",
     };
 
-    if (editIndex !== null) {
-      updateProduct(editIndex, productData);
-      setEditIndex(null);
+    if (editId) {
+      await updateProduct(editId, productData);
     } else {
-      addProduct(productData);
+      await addProduct(productData);
     }
 
-    setProducts(getProducts());
     resetForm();
+    loadProducts();
   };
 
-  const editProduct = (index) => {
-    const p = products[index];
-    setName(p.name);
-    setPrice(p.price);
-    setImage(p.image);
-    setEditIndex(index);
+  // 🔹 Edit product
+  const editProduct = (product) => {
+    setName(product.name);
+    setPrice(product.price);
+    setImage(product.image || "");
+    setEditId(product.id);
   };
 
-  const removeProduct = (index) => {
+  // 🔹 Delete product
+  const removeProduct = async (id) => {
     if (window.confirm("Delete this product?")) {
-      deleteProduct(index);
-      setProducts(getProducts());
+      await deleteProduct(id);
+      loadProducts();
     }
   };
 
@@ -76,7 +84,7 @@ function AdminPanel() {
     setName("");
     setPrice("");
     setImage("");
-    setEditIndex(null);
+    setEditId(null);
   };
 
   return (
@@ -99,10 +107,10 @@ function AdminPanel() {
         <input type="file" accept="image/*" onChange={handleImage} />
 
         <button onClick={submitProduct}>
-          {editIndex !== null ? "Update Product" : "Add Product"}
+          {editId ? "Update Product" : "Add Product"}
         </button>
 
-        {editIndex !== null && (
+        {editId && (
           <button onClick={resetForm} className="secondary">
             Cancel Edit
           </button>
@@ -112,14 +120,19 @@ function AdminPanel() {
       <h3>Product List</h3>
 
       <div className="admin-list">
-        {products.map((p, i) => (
-          <div key={i} className="admin-card">
-            <img src={p.image} />
-            <p><strong>{p.name}</strong></p>
+        {products.map((p) => (
+          <div key={p.id} className="admin-card">
+            {p.image && <img src={p.image} alt={p.name} />}
+            <p>
+              <strong>{p.name}</strong>
+            </p>
             <p>₹{p.price}</p>
 
-            <button onClick={() => editProduct(i)}>Edit</button>
-            <button onClick={() => removeProduct(i)} className="danger">
+            <button onClick={() => editProduct(p)}>Edit</button>
+            <button
+              onClick={() => removeProduct(p.id)}
+              className="danger"
+            >
               Delete
             </button>
           </div>

@@ -1,26 +1,31 @@
-// src/utils/storage.js
-export function getProducts() {
-  return JSON.parse(localStorage.getItem("products")) || [];
-}
+import {
+  collection,
+  getDocs,
+  addDoc,
+  deleteDoc,
+  doc,
+  updateDoc,
+} from "firebase/firestore";
+import { db } from "../firebase";
 
-export function saveProducts(products) {
-  localStorage.setItem("products", JSON.stringify(products));
-}
+const productsRef = collection(db, "products");
 
-export function addProduct(product) {
-  const products = getProducts();
-  products.push(product);
-  saveProducts(products);
-}
+export const getProducts = async () => {
+  const snapshot = await getDocs(productsRef);
+  return snapshot.docs.map((d) => ({
+    id: d.id,
+    ...d.data(),
+  }));
+};
 
-export function deleteProduct(index) {
-  const products = getProducts();
-  products.splice(index, 1);
-  saveProducts(products);
-}
+export const addProduct = async (product) => {
+  await addDoc(productsRef, product);
+};
 
-export function updateProduct(index, updatedProduct) {
-  const products = getProducts();
-  products[index] = updatedProduct;
-  saveProducts(products);
-}
+export const deleteProduct = async (id) => {
+  await deleteDoc(doc(db, "products", id));
+};
+
+export const updateProduct = async (id, product) => {
+  await updateDoc(doc(db, "products", id), product);
+};
