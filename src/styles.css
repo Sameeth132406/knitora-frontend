@@ -1,0 +1,188 @@
+body {
+  margin: 0;
+  font-family: "Segoe UI", sans-serif;
+  background-color: #f6ecf3;
+}
+
+.home {
+  height: 100vh;
+  background: linear-gradient(to bottom, #f6ecf3, #efe2f1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.overlay {
+  text-align: center;
+}
+
+.logo {
+  width: 260px;
+}
+
+.tagline {
+  font-size: 28px;
+  color: #7b5aa6;
+}
+
+.description {
+  color: #555;
+  max-width: 420px;
+  margin: 10px auto 30px;
+}
+
+.buttons button {
+  padding: 12px 24px;
+  margin: 10px;
+  border-radius: 25px;
+  border: none;
+  cursor: pointer;
+}
+
+.primary {
+  background-color: #7b5aa6;
+  color: white;
+}
+
+.secondary {
+  background: transparent;
+  color: #7b5aa6;
+  border: 2px solid #7b5aa6;
+}
+.nav {
+  background: #7b5aa6;
+  padding: 10px;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+}
+
+.nav a {
+  color: white;
+  margin: 0 10px;
+  text-decoration: none;
+}
+
+.admin, .shop {
+  padding: 20px;
+}
+
+.card {
+  background: white;
+  padding: 10px;
+  margin: 10px;
+  width: 220px;
+}
+
+.card img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+}
+
+.contact {
+  font-size: 14px;
+  color: #7b5aa6;
+}
+.whatsapp-btn {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 8px 12px;
+  background-color: #25D366;
+  color: white;
+  text-decoration: none;
+  border-radius: 20px;
+  font-size: 14px;
+}
+
+.whatsapp-btn:hover {
+  background-color: #1ebe5d;
+}
+.whatsapp-float {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #25D366;
+  color: white;
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  text-align: center;
+  font-size: 28px;
+  line-height: 55px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+  z-index: 1000;
+  text-decoration: none;
+}
+
+.whatsapp-float:hover {
+  background-color: #1ebe5d;
+}
+.admin-form input {
+  display: block;
+  margin: 8px 0;
+  padding: 8px;
+}
+
+.admin-list {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.admin-card {
+  background: #fff;
+  padding: 10px;
+  margin: 10px;
+  width: 200px;
+}
+
+.admin-card img {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+}
+
+.admin-card button {
+  margin-right: 5px;
+}
+
+.danger {
+  background: #d9534f;
+  color: white;
+}
+.secondary {
+  background: #ccc;
+  margin-left: 10px;
+}
+.product-img {
+  cursor: zoom-in;
+}
+
+/* ZOOM OVERLAY */
+.zoom-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+
+.zoom-image {
+  max-width: 90%;
+  max-height: 90%;
+  border-radius: 8px;
+}
+
+.close-btn {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  color: white;
+  font-size: 28px;
+  cursor: pointer;
+}
