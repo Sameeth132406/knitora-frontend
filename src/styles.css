@@ -1,9 +1,11 @@
+/* ===== GLOBAL ===== */
 body {
   margin: 0;
   font-family: "Segoe UI", sans-serif;
   background-color: #f6ecf3;
 }
 
+/* ===== HOME ===== */
 .home {
   height: 100vh;
   background: linear-gradient(to bottom, #f6ecf3, #efe2f1);
@@ -31,6 +33,7 @@ body {
   margin: 10px auto 30px;
 }
 
+/* ===== BUTTONS ===== */
 .buttons button {
   padding: 12px 24px;
   margin: 10px;
@@ -49,6 +52,8 @@ body {
   color: #7b5aa6;
   border: 2px solid #7b5aa6;
 }
+
+/* ===== NAVBAR ===== */
 .nav {
   background: #7b5aa6;
   padding: 10px;
@@ -63,41 +68,108 @@ body {
   text-decoration: none;
 }
 
-.admin, .shop {
+/* ===== ADMIN ===== */
+.admin {
   padding: 20px;
 }
 
-.card {
-  background: white;
-  padding: 10px;
-  margin: 10px;
-  width: 220px;
+.admin-form input,
+.admin-form textarea {
+  display: block;
+  width: 100%;
+  margin: 8px 0;
+  padding: 8px;
 }
 
-.card img {
+.admin-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.admin-card {
+  background: #fff;
+  padding: 10px;
+  width: 200px;
+  border-radius: 6px;
+}
+
+.admin-card img {
   width: 100%;
-  height: 150px;
+  height: 120px;
   object-fit: cover;
 }
 
-.contact {
-  font-size: 14px;
-  color: #7b5aa6;
+.admin-card button {
+  margin-right: 5px;
 }
+
+.danger {
+  background: #d9534f;
+  color: white;
+}
+
+/* ===== SHOP (IMPORTANT PART) ===== */
+.shop {
+  padding: 20px;
+}
+
+.shop-list {
+  display: flex;
+  justify-content: flex-start;   /* LEFT aligned */
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.shop-card {
+  background: #ffffff;
+  width: 260px;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+}
+
+.shop-card img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+.shop-card h3 {
+  margin: 10px 0 5px;
+}
+
+.shop-card p {
+  margin: 4px 0;
+}
+
+.price {
+  font-weight: bold;
+}
+
+.enquiry {
+  color: purple;
+  font-size: 14px;
+}
+
+/* ===== WHATSAPP BUTTON ===== */
 .whatsapp-btn {
   display: inline-block;
-  margin-top: 10px;
-  padding: 8px 12px;
-  background-color: #25D366;
+  margin-top: 8px;
+  background: #25d366;
   color: white;
-  text-decoration: none;
+  padding: 8px 14px;
   border-radius: 20px;
+  text-decoration: none;
   font-size: 14px;
 }
 
 .whatsapp-btn:hover {
-  background-color: #1ebe5d;
+  background: #1ebe5d;
 }
+
+/* ===== FLOATING WHATSAPP ===== */
 .whatsapp-float {
   position: fixed;
   bottom: 20px;
@@ -115,57 +187,18 @@ body {
   text-decoration: none;
 }
 
-.whatsapp-float:hover {
-  background-color: #1ebe5d;
-}
-.admin-form input {
-  display: block;
-  margin: 8px 0;
-  padding: 8px;
-}
-
-.admin-list {
-  display: flex;
-  flex-wrap: wrap;
-}
-
-.admin-card {
-  background: #fff;
-  padding: 10px;
-  margin: 10px;
-  width: 200px;
-}
-
-.admin-card img {
-  width: 100%;
-  height: 120px;
-  object-fit: cover;
-}
-
-.admin-card button {
-  margin-right: 5px;
-}
-
-.danger {
-  background: #d9534f;
-  color: white;
-}
-.secondary {
-  background: #ccc;
-  margin-left: 10px;
-}
+/* ===== IMAGE ZOOM (OPTIONAL) ===== */
 .product-img {
   cursor: zoom-in;
 }
 
-/* ZOOM OVERLAY */
 .zoom-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.85);
+  background: rgba(0,0,0,0.85);
   display: flex;
   justify-content: center;
   align-items: center;
