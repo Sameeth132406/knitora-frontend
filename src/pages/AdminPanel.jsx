@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
 import {
-  getProducts,
   addProduct,
   deleteProduct,
   updateProduct,
 } from "../utils/storage";
+import { collection, onSnapshot } from "firebase/firestore";
+import { db } from "../firebase";
 import { useNavigate } from "react-router-dom";
 
 function AdminPanel() {
@@ -15,20 +16,29 @@ function AdminPanel() {
   const [price, setPrice] = useState("");
   const [image, setImage] = useState("");
   const [editId, setEditId] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  // 🔹 Load products from Firebase
+  // 🔹 REALTIME product listener (sync across devices)
   useEffect(() => {
     if (localStorage.getItem("admin") !== "true") {
       navigate("/admin");
       return;
     }
-    loadProducts();
-  }, []);
 
-  const loadProducts = async () => {
-    const data = await getProducts();
-    setProducts(data);
-  };
+    const unsubscribe = onSnapshot(
+      collection(db, "products"),
+      (snapshot) => {
+        const data = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        setProducts(data);
+        setLoading(false);
+      }
+    );
+
+    return () => unsubscribe();
+  }, []);
 
   // 🔹 Handle image safely
   const handleImage = (e) => {
@@ -61,7 +71,6 @@ function AdminPanel() {
     }
 
     resetForm();
-    loadProducts();
   };
 
   // 🔹 Edit product
@@ -76,7 +85,6 @@ function AdminPanel() {
   const removeProduct = async (id) => {
     if (window.confirm("Delete this product?")) {
       await deleteProduct(id);
-      loadProducts();
     }
   };
 
@@ -119,25 +127,27 @@ function AdminPanel() {
 
       <h3>Product List</h3>
 
-      <div className="admin-list">
-        {products.map((p) => (
-          <div key={p.id} className="admin-card">
-            {p.image && <img src={p.image} alt={p.name} />}
-            <p>
-              <strong>{p.name}</strong>
-            </p>
-            <p>₹{p.price}</p>
+      {loading ? (
+        <p>Loading products...</p>
+      ) : (
+        <div className="admin-list">
+          {products.map((p) => (
+            <div key={p.id} className="admin-card">
+              {p.image && <img src={p.image} alt={p.name} />}
+              <p><strong>{p.name}</strong></p>
+              <p>₹{p.price}</p>
 
-            <button onClick={() => editProduct(p)}>Edit</button>
-            <button
-              onClick={() => removeProduct(p.id)}
-              className="danger"
-            >
-              Delete
-            </button>
-          </div>
-        ))}
-      </div>
+              <button onClick={() => editProduct(p)}>Edit</button>
+              <button
+                onClick={() => removeProduct(p.id)}
+                className="danger"
+              >
+                Delete
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
