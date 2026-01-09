@@ -1,23 +1,15 @@
 import { useEffect, useState } from "react";
-import { collection, onSnapshot } from "firebase/firestore";
-import { db } from "../firebase";
+
+const API_URL = "/api/products";
+const WHATSAPP_NUMBER = "917845852613";
 
 function Shop() {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    const unsubscribe = onSnapshot(
-      collection(db, "products"),
-      (snapshot) => {
-        const data = snapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-        setProducts(data);
-      }
-    );
-
-    return () => unsubscribe();
+    fetch(API_URL)
+      .then((res) => res.json())
+      .then((data) => setProducts(data));
   }, []);
 
   return (
@@ -25,44 +17,35 @@ function Shop() {
       <h2>Shop</h2>
 
       <div className="shop-list">
-        {products.map((p) => (
-          <div key={p.id} className="shop-card">
-            {/* Image */}
-            {p.image ? (
-              <img src={p.image} alt={p.name || "Product"} />
-            ) : (
-              <div className="no-image">No Image</div>
-            )}
+        {products.map((p) => {
+          const message = `Hi Knitora 👋, I would like to enquire about the ${p.name} (₹${p.price}).`;
 
-            {/* Name */}
-            <h3>{p.name || "Unnamed Product"}</h3>
+          return (
+            <div key={p.id} className="shop-card">
+              {p.image && (
+                <img
+                  src={`http://localhost:5000/uploads/${p.image}`}
+                  alt={p.name}
+                />
+              )}
 
-            {/* Price */}
-            <p className="price">
-              {p.price ? `₹${p.price}` : "Price not available"}
-            </p>
-
-            {/* Description */}
-            {p.description && (
+              <h3>{p.name}</h3>
+              <p className="price">₹{p.price}</p>
               <p className="description">{p.description}</p>
-            )}
 
-            {/* Enquiry */}
-            <p className="enquiry">
-              📞 Enquiry: +{p.contact || "91XXXXXXXXXX"}
-            </p>
-
-            {/* WhatsApp */}
-            <a
-              className="whatsapp-btn"
-              href={`https://wa.me/${p.contact}?text=I want to buy ${p.name}`}
-              target="_blank"
-              rel="noreferrer"
-            >
-              Chat on WhatsApp
-            </a>
-          </div>
-        ))}
+              <a
+                className="whatsapp-btn"
+                href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
+                  message
+                )}`}
+                target="_blank"
+                rel="noreferrer"
+              >
+                Chat on WhatsApp
+              </a>
+            </div>
+          );
+        })}
       </div>
     </div>
   );
